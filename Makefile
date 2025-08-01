@@ -81,6 +81,13 @@ else ifeq ($(PLATFORM),windows)
 	@$(MAKE) build-windows
 endif
 
+# Shorter aliases for platform builds
+.PHONY: mac
+mac: build-macos
+
+.PHONY: windows
+windows: build-windows
+
 # Build for macOS ARM64
 .PHONY: build-macos
 build-macos: bundle-python-macos
@@ -191,8 +198,10 @@ help:
 	@echo ""
 	@echo "Usage:"
 	@echo "  make build          - Build for current platform"
-	@echo "  make build-macos    - Build for macOS ARM64"
-	@echo "  make build-windows  - Build for Windows"
+	@echo "  make mac            - Build for macOS ARM64"
+	@echo "  make windows        - Build for Windows"
+	@echo "  make build-macos    - Build for macOS ARM64 (same as 'make mac')"
+	@echo "  make build-windows  - Build for Windows (same as 'make windows')"
 	@echo "  make deps           - Install all dependencies"
 	@echo "  make clean          - Clean build artifacts"
 	@echo "  make dev            - Run in development mode"
