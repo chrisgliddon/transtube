@@ -27,7 +27,7 @@ PYINSTALLER = pyinstaller
 ifeq ($(UNAME_S),Darwin)
 	PLATFORM = macos
 	FLUTTER_BUILD_CMD = flutter build macos --release
-	APP_OUTPUT = $(FLUTTER_DIR)/build/macos/Build/Products/Release/$(APP_NAME).app
+	APP_OUTPUT = $(FLUTTER_DIR)/build/macos/Build/Products/Release/transtube_gui.app
 	DIST_OUTPUT = $(DIST_DIR)/$(APP_NAME)-macOS-arm64.app
 else ifeq ($(OS),Windows_NT)
 	PLATFORM = windows
@@ -101,7 +101,7 @@ build-macos: bundle-python-macos
 	
 	@echo "Embedding Python backend..."
 	mkdir -p "$(DIST_OUTPUT)/Contents/Resources/backend"
-	cp -R $(PYTHON_BUNDLE_DIR)/dist/transtube_backend/* "$(DIST_OUTPUT)/Contents/Resources/backend/"
+	cp -R $(BUILD_DIR)/dist/transtube_backend/* "$(DIST_OUTPUT)/Contents/Resources/backend/"
 	
 	@echo "Setting permissions..."
 	chmod +x "$(DIST_OUTPUT)/Contents/MacOS/transtube_gui"
@@ -125,7 +125,7 @@ build-windows: bundle-python-windows
 	
 	@echo "Embedding Python backend..."
 	mkdir -p $(DIST_DIR)/$(APP_NAME)-Windows/backend
-	cp -R $(PYTHON_BUNDLE_DIR)/dist/transtube_backend/* $(DIST_DIR)/$(APP_NAME)-Windows/backend/
+	cp -R $(BUILD_DIR)/dist/transtube_backend/* $(DIST_DIR)/$(APP_NAME)-Windows/backend/
 	
 	@echo "Creating portable package..."
 	cd $(DIST_DIR) && zip -r $(APP_NAME)-Windows-Portable.zip $(APP_NAME)-Windows
