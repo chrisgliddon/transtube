@@ -81,9 +81,16 @@ else ifeq ($(PLATFORM),windows)
 	@$(MAKE) build-windows
 endif
 
+# Linting
+.PHONY: lint
+lint:
+	@echo "Running linter..."
+	$(PIP) install ruff || true
+	ruff check . || true
+
 # Shorter aliases for platform builds
 .PHONY: mac
-mac: build-macos
+mac: clean deps lint build-macos
 
 .PHONY: windows
 windows: build-windows
@@ -92,12 +99,11 @@ windows: build-windows
 .PHONY: build-macos
 build-macos: bundle-python-macos
 	@echo "Building Flutter app for macOS..."
-	cd $(FLUTTER_DIR) && flutter clean
 	cd $(FLUTTER_DIR) && $(FLUTTER_BUILD_CMD)
 	
 	@echo "Preparing distribution..."
 	mkdir -p $(DIST_DIR)
-	cp -R $(APP_OUTPUT) $(DIST_OUTPUT)
+	cp -R $(APP_OUTPUT)/ $(DIST_OUTPUT)
 	
 	@echo "Embedding Python backend..."
 	mkdir -p "$(DIST_OUTPUT)/Contents/Resources/backend"
